@@ -17,13 +17,20 @@ public class Exemplo {
 //		System.out.println(cliente);
 		
 		
-		Cliente cliente = new Cliente();
-		cliente.setId(2);
-		cliente.setNome("Autopeças Estrada");
+//		// inserindo cliente
+//		Cliente cliente = new Cliente();
+//		cliente.setNome("Eletro Silva");
+//		entityManager.getTransaction().begin();
+//		entityManager.persist(cliente);
+//		entityManager.getTransaction().commit();
 		
+		// removendo cliente
+		Cliente cliente = entityManager.find(Cliente.class, 2);
 		entityManager.getTransaction().begin();
-		entityManager.persist(cliente);
+		entityManager.remove(cliente);
 		entityManager.getTransaction().commit();
+		
+		
 		
 		entityManager.close();
 		entityManagerFactory.close();
