@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>github.tiagomac</groupId>
-	<artifactId>examples-in-jpa</artifactId>
+	<artifactId>01-basic-jpa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>examples-in-jpa</name>
+	<name>01-basic-jpa</name>
 	<description>Exemplos práticos em JPA e Hibernates</description>
 
 	<dependencies>
