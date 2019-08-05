@@ -21,9 +21,9 @@ public class Exemplo {
 		cliente.setId(2);
 		cliente.setNome("Autopeças Estrada");
 		
-//		entityManager.getTransaction().begin();
+		entityManager.getTransaction().begin();
 		entityManager.persist(cliente);
-//		entityManager.getTransaction().commit();
+		entityManager.getTransaction().commit();
 		
 		entityManager.close();
 		entityManagerFactory.close();
