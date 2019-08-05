@@ -25,11 +25,29 @@ public class Exemplo {
 //		entityManager.getTransaction().commit();
 		
 		// removendo cliente
-		Cliente cliente = entityManager.find(Cliente.class, 2);
-		entityManager.getTransaction().begin();
-		entityManager.remove(cliente);
-		entityManager.getTransaction().commit();
+//		Cliente cliente = entityManager.find(Cliente.class, 2);
+//		entityManager.getTransaction().begin();
+//		entityManager.remove(cliente);
+//		entityManager.getTransaction().commit();
 		
+//		Cliente cliente = entityManager.find(Cliente.class, 1);
+//		Cliente cliente2 = entityManager.find(Cliente.class, 1);
+		
+		// objeto gerenciado
+//		Cliente cliente = entityManager.find(Cliente.class, 1);
+//		entityManager.getTransaction().begin();
+//		cliente.setNome(cliente.getNome() + " Alterado");
+//		entityManager.getTransaction().commit();
+		
+		
+		// uso do merge para atualizar registros (o merge também cria caso o id não exista).
+		Cliente cliente = new Cliente();
+//		cliente.setId(1);
+		cliente.setNome("Construtora Medeiros");
+		
+		entityManager.getTransaction().begin();
+		entityManager.merge(cliente);
+		entityManager.getTransaction().commit();
 		
 		
 		entityManager.close();
