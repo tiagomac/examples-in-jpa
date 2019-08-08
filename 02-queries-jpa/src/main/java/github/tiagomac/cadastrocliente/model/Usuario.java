@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,16 +30,8 @@ public class Usuario {
 	@ManyToOne
 	@ToString.Exclude
 	private Dominio dominio;
-	//
-//	    @OneToOne(mappedBy = "usuario")
-//	    private Configuracao configuracao;
 
-//	    public Configuracao getConfiguracao() {
-//	        return configuracao;
-//	    }
-	//
-//	    public void setConfiguracao(Configuracao configuracao) {
-//	        this.configuracao = configuracao;
-//	    }
+	@OneToOne(mappedBy = "usuario")
+	private Configuracao configuracao;
 
 }

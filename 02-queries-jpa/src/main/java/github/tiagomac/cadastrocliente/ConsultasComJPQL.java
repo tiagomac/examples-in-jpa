@@ -1,5 +1,6 @@
 package github.tiagomac.cadastrocliente;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,10 +22,73 @@ public class ConsultasComJPQL {
 //		primeiraConsulta(entityManager);
 //		escolhendoRetorno(entityManager);
 //		fazendoProjecoes(entityManager);
-		passandoParametros(entityManager);
+//		passandoParametros(entityManager);
+//		fazendoJoins(entityManager);
+//		carregamentoComJoinFetch(entityManager);
+//		filtrandoRegistros(entityManager);
+//		utilizandoOperadoresLogicos(entityManager);
+		paginandoResultados(entityManager);
 		
 		entityManager.close();
 		entityManagerFactory.close();
+	}
+	
+	private static void paginandoResultados(EntityManager entityManager) {
+		String jpql = "select u from Usuario u";
+		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class)
+				.setFirstResult(0)
+				.setMaxResults(2);
+		List<Usuario> lista = typedQuery.getResultList();
+		lista.forEach(u -> System.out.println(u));
+	}
+
+	private static void utilizandoOperadoresLogicos(EntityManager entityManager) {
+		String jpql = "select u from Usuario u where u.ultimoAcesso > :ontem and u.ultimoAcesso < :hoje";
+		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class)
+				.setParameter("ontem", LocalDateTime.now().minusDays(1))
+				.setParameter("hoje", LocalDateTime.now());
+		List<Usuario> lista = typedQuery.getResultList();
+		lista.forEach(u -> System.out.println(u));
+	}
+
+	public static void filtrandoRegistros(EntityManager entityManager) {
+		String jpql = "select u from Usuario u where u.ultimoAcesso between :ontem and :hoje";
+		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class)
+				.setParameter("ontem", LocalDateTime.now().minusDays(1))
+				.setParameter("hoje", LocalDateTime.now());
+		List<Usuario> lista = typedQuery.getResultList();
+		lista.forEach(u -> System.out.println(u));
+	}
+
+	public static void carregamentoComJoinFetch(EntityManager entityManager) {
+		String jpql = "select u from Usuario u join fetch u.configuracao join fetch u.dominio";
+		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class);
+		List<Usuario> lista = typedQuery.getResultList();
+		lista.forEach(u -> System.out.println(u));
+	}
+
+	public static void fazendoLeftJoin(EntityManager entityManager) {
+		String jpql = "select u, c from Usuario u left join u.configuracao c";
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+		List<Object[]> lista = typedQuery.getResultList();
+		
+		lista.forEach(arr -> {
+			String out = ((Usuario) arr[0]).getNome();
+			if (arr[1] == null) {
+				out += ", NULL";
+			} else {
+				out += ((Dominio) arr[1]).getNome();
+			}
+			
+			System.out.println(out);
+		});
+	}
+	
+	public static void fazendoJoins(EntityManager entityManager) {
+		String jpql = "select u from Usuario u join u.dominio d where d.id = 1";
+		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class);
+		List<Usuario> lista = typedQuery.getResultList();
+		lista.forEach(u -> System.out.println(u.getId() + ", " + u.getNome()));
 	}
 	
 	public static void passandoParametros(EntityManager entityManager) {
