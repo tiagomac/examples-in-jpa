@@ -8,6 +8,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import github.tiagomac.cadastrocliente.dto.UsuarioDTO;
 import github.tiagomac.cadastrocliente.model.Dominio;
@@ -27,11 +30,20 @@ public class ConsultasComJPQL {
 //		carregamentoComJoinFetch(entityManager);
 //		filtrandoRegistros(entityManager);
 //		utilizandoOperadoresLogicos(entityManager);
-		paginandoResultados(entityManager);
+//		paginandoResultados(entityManager);
+		passandoParametros(entityManager);
 		
 		entityManager.close();
 		entityManagerFactory.close();
 	}
+	
+	
+//	public static void fazendoProjecoes(EntityManager entityManager) {
+//		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//		
+//		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+//		
+//	}
 	
 	private static void paginandoResultados(EntityManager entityManager) {
 		String jpql = "select u from Usuario u";
@@ -92,11 +104,22 @@ public class ConsultasComJPQL {
 	}
 	
 	public static void passandoParametros(EntityManager entityManager) {
-		String jpql = "select u from Usuario u where u.id = :idUsuario";
-		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class);
-		typedQuery.setParameter("idUsuario", 1);
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Usuario> criteriaQuery = criteriaBuilder.createQuery(Usuario.class);
+		Root<Usuario> root = criteriaQuery.from(Usuario.class)
+				;
+		criteriaQuery.select(root);
+		criteriaQuery.where(criteriaBuilder.equal(root.get("login"), "ria"));
+		
+		TypedQuery<Usuario> typedQuery = entityManager.createQuery(criteriaQuery);
 		Usuario usuario = typedQuery.getSingleResult();
-		System.out.println(usuario);
+		System.out.println(usuario.getId() + ", " + usuario.getNome());
+		
+//		String jpql = "select u from Usuario u where u.id = :idUsuario";
+//		TypedQuery<Usuario> typedQuery = entityManager.createQuery(jpql, Usuario.class);
+//		typedQuery.setParameter("idUsuario", 1);
+//		Usuario usuario = typedQuery.getSingleResult();
+//		System.out.println(usuario);
 	}
 	
 	public static void fazendoProjecoes(EntityManager entityManager) {
